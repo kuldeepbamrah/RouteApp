@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+       <Button
+           android:layout_width="0dp"
+           android:layout_height="match_parent"
+           android:layout_weight="1"
+           android:text="Restaurants"
+           android:id="@+id/btn_restaurant"
+           android:background="#065"
+           android:layout_marginRight="0.5dp"
+           android:textColor="#fff"
+           android:onClick="btnClick"></Button>
+
+       <Button
+           android:layout_width="0dp"
+           android:layout_height="match_parent"
+           android:layout_weight="1"
+           android:layout_marginLeft="0.5dp"
+           android:text="Distance"
+           android:id="@+id/btn_distance"
+           android:background="#065"
+           android:textColor="#fff"
+           android:onClick="btnClick"></Button>
+
+       <Button
+           android:layout_width="0dp"
+           android:layout_height="match_parent"
+           android:layout_weight="1"
+           android:layout_marginLeft="0.5dp"
+           android:text="Clear"
+           android:id="@+id/btn_clear"
+           android:background="#065"
+           android:textColor="#fff"
+           android:onClick="btnClick"></Button>
+   </LinearLayout>
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map"></fragment>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_direction"
+        android:text="Get Direction"
+        android:background="#065"
+        android:textColor="#fff"></Button>
+
+</LinearLayout>
