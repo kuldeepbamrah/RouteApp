@@ -58,6 +58,7 @@
         android:id="@+id/btn_direction"
         android:text="Get Direction"
         android:background="#065"
-        android:textColor="#fff"></Button>
+        android:textColor="#fff"
+        android:onClick="btnClick"></Button>
 
 </LinearLayout>

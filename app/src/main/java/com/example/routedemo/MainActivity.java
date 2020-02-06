@@ -42,8 +42,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     LocationCallback locationCallback;
     LocationRequest locationRequest;
 
-    double latitude, longitude;
+    double latitude, longitude, destLAt,destLong;
+
     final int RADIUS = 1500;
+
+    String url;
+
+    static boolean directionRequested;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+
+
    // https://maps.googleapis.com/maps/api/place/findplacefromtext/output?parameters
 
 
@@ -156,8 +164,24 @@ private String getUrl(double latitude, double longitude, String nearbyPlace)
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng)
+            {
+                destLAt = latLng.latitude;
+                destLong = latLng.longitude;
+                mMap.addMarker( new MarkerOptions().position( latLng )
+                        .title( "Your Location" )
+                .snippet("You're Going there"));
+
+
+            }
+        });
 
     }
+
+
 
     public void btnClick(View view)
     {
@@ -165,7 +189,7 @@ private String getUrl(double latitude, double longitude, String nearbyPlace)
         {
             case R.id.btn_restaurant:
                 // get the url from place api
-                String url = getUrl( latitude, longitude, "restaurant" );
+                url = getUrl( latitude, longitude, "restaurant" );
                 Log.i("MainActivity", url);
                // setmarkers( url );
                 Object[] dataTransfer = new Object[2];
@@ -175,7 +199,40 @@ private String getUrl(double latitude, double longitude, String nearbyPlace)
                 getNearbyPlaceData.execute(dataTransfer);
                 Toast.makeText( this, "Restautants", Toast.LENGTH_SHORT ).show();
                 break;
+
+
+            case R.id.btn_distance:
+            case R.id.btn_direction:
+
+                url = getDirectionUrl();
+                Log.i("Main Activity",url);
+                dataTransfer = new Object[3];
+                dataTransfer[0] = mMap;
+                dataTransfer[1] = url;
+                dataTransfer[2] = new LatLng(destLAt,destLong);
+                GetDirection getDirection = new GetDirection();
+                getDirection.execute(dataTransfer);
+                if(view.getId() == R.id.btn_direction)
+                {
+                    directionRequested = true;
+                }
+                else
+                {
+                    directionRequested = false;
+                }
+                break;
+
+
         }
+    }
+
+    private String getDirectionUrl()
+    {
+        StringBuilder placeUrl = new StringBuilder("https://maps.googleapis.com/maps/api/directions/json?"  );
+        placeUrl.append("origin="+latitude+","+longitude);
+        placeUrl.append("&destination="+destLAt+","+destLong);
+        placeUrl.append("&key="+getString(R.string.api_key_class));
+        return placeUrl.toString();
     }
 
     private void setmarkers (String url) {
